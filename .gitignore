@@ -489,6 +489,14 @@ bin
 obj
 appsettings.json
 local.settings.json
+send-message.sh
+send-message.ps1
+
+# Azurite
+__blobstorage__/
+__queuestorage__/
+__azurite_db_*__.json
+AzuriteConfig
 *.azurepubxml
 *.PublishSettings
 
