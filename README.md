@@ -29,7 +29,7 @@ This sample processes queue-based events, demonstrating a common Azure Functions
 
 ## Prerequisites
 
-* [Python 3.8 or later](https://www.python.org/downloads/)
+* [Python 3.11 or later](https://www.python.org/downloads/)
 * [Azure Functions Core Tools](https://learn.microsoft.com/azure/azure-functions/functions-run-local?tabs=v4%2Clinux%2Cpython%2Cportal%2Cbash#install-the-azure-functions-core-tools)
 * To use Visual Studio Code to run and debug locally:
     * [Visual Studio Code](https://code.visualstudio.com/)
