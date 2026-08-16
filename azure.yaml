@@ -20,6 +20,6 @@ hooks:
       continueOnError: false
     posix:
       shell: sh
-      run: chmod +x ./infra/scripts/*.sh && ./infra/scripts/postprovision.sh
+      run: ./infra/scripts/postprovision.sh
       interactive: true
       continueOnError: false
