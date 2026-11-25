@@ -10,7 +10,7 @@
   },
   "extensions": {
     "serviceBus": {
-        "maxConcurrentCalls": 1
+      "maxConcurrentCalls": 1
     }
   },
   "extensionBundle": {
