@@ -3,7 +3,7 @@
     "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
         "FUNCTIONS_WORKER_RUNTIME": "python",
-        "ServiceBusConnection": "",
-        "ServiceBusQueueName": "testqueue"
+        "ServiceBusConnection__fullyQualifiedNamespace": "<your-namespace>.servicebus.windows.net",
+        "ServiceBusQueueName": "<your-queue-name>"
     }
 }

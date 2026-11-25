@@ -62,6 +62,13 @@ You can initialize a project from this `azd` template in one of these ways:
 
 ## Provision Azure resources
 
+1. Sign in with the Azure Developer CLI and the Azure CLI (the generated test script uses `az rest`):
+
+    ```shell
+    azd auth login
+    az login
+    ```
+
 1. Run the following command to provision all required Azure resources:
 
     ```shell
@@ -75,16 +82,16 @@ You can initialize a project from this `azd` template in one of these ways:
     | _Environment name_ | An environment that's used to maintain a unique deployment context for your app. You won't be prompted if you created the local project using `azd init`. |
     | _Azure subscription_ | Subscription in which your resources are created. |
     | _Azure location_ | Azure region in which to create the resource group that contains the new Azure resources. Only regions that currently support the Flex Consumption plan are shown. |
-    | _VNET_ENABLED_ | Whether to deploy with VNet integration and private endpoints. Enter `false` unless you need private networking. |
+    | _vnetEnabled_ | Whether to deploy with VNet integration and private endpoints. Select `False` unless you need private networking. |
 
     This creates all necessary Azure resources including:
     * Azure Service Bus namespace and queue
     * Azure Function App (Flex Consumption)
     * Application Insights for monitoring
     * Storage account for function app
-    * Virtual network with private endpoints (if `VNET_ENABLED=true`)
+    * Virtual network with private endpoints (if `vnetEnabled` is `True`)
 
-    After provisioning completes, a post-provision script automatically generates `src/local.settings.json` with the correct Service Bus connection settings:
+    After provisioning completes, a post-provision script creates `src/local.settings.json` (if it doesn't already exist) and a `send-message.ps1` or `send-message.sh` test script in the root folder. The generated settings file looks like this:
 
     ```json
     {
@@ -100,9 +107,10 @@ You can initialize a project from this `azd` template in one of these ways:
 
 ## Prepare local dependencies
 
-1. Create a Python virtual environment and activate it:
+1. From the `src` folder, create a Python virtual environment and activate it:
 
     ```shell
+    cd src
     python -m venv .venv
     source .venv/bin/activate
     ```
@@ -110,13 +118,15 @@ You can initialize a project from this `azd` template in one of these ways:
     On Windows:
 
     ```powershell
+    cd src
+    python -m venv .venv
     .venv\Scripts\activate
     ```
 
 1. Install the required Python packages:
 
     ```shell
-    pip install -r src/requirements.txt
+    pip install -r requirements.txt
     ```
 
 ## Run your app locally
@@ -126,7 +136,6 @@ You can initialize a project from this `azd` template in one of these ways:
 1. From the `src` folder, run this command to start the Functions host locally:
 
     ```shell
-    cd src
     func start
     ```
 
@@ -134,14 +143,14 @@ You can initialize a project from this `azd` template in one of these ways:
 
     ```output
     Functions:
-        servicebus_queue_trigger: serviceBusQueueTrigger
+        servicebus_queue_trigger: serviceBusTrigger
     ```
 
 1. When you're done, press Ctrl+C in the terminal window to stop the `func` host process.
 
 ## Run your app using Visual Studio Code
 
-1. Open the project root folder in Visual Studio Code.
+1. Open the `src` folder in Visual Studio Code.
 1. Start the Azurite storage emulator.
 1. Press **Run/Debug (F5)** to run in the debugger.
 1. The Azure Functions extension starts the local runtime.
@@ -172,7 +181,9 @@ azd deploy
     .\send-message.ps1
     ```
 
-1. You should see output in the function terminal similar to:
+    When `vnetEnabled` is `True`, send messages from a client that can reach the Service Bus private endpoint. Or, to use [Service Bus Explorer](https://learn.microsoft.com/azure/service-bus-messaging/explorer) in the Azure portal, temporarily set the namespace's **Networking** > **Public network access** to **Selected networks** and add your client IP address, then set it back to **Disabled** when you're done.
+
+1. You should see output in the function terminal (or in Application Insights for the deployed app) similar to:
 
     ```output
     [2026-01-01T10:30:15.123Z] Python ServiceBus Queue trigger start processing a message: Hello from the CLI
