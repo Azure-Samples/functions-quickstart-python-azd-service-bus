@@ -264,7 +264,7 @@ module servicePrivateEndpoint 'app/servicebus-privateEndpoint.bicep' = if (vnetE
   params: {
     location: location
     tags: tags
-    virtualNetworkName: !empty(vNetName) ? vNetName : '${abbrs.networkVirtualNetworks}${resourceToken}'
+    virtualNetworkName: serviceVirtualNetwork!.outputs.name
     subnetName: 'sb'
     sbNamespaceId: serviceBus.outputs.resourceId
   }
@@ -276,7 +276,7 @@ module storagePrivateEndpoint 'app/storage-PrivateEndpoint.bicep' = if (vnetEnab
   params: {
     location: location
     tags: tags
-    virtualNetworkName: !empty(vNetName) ? vNetName : '${abbrs.networkVirtualNetworks}${resourceToken}'
+    virtualNetworkName: serviceVirtualNetwork!.outputs.name
     subnetName: 'st'
     resourceName: storage.outputs.name
   }
